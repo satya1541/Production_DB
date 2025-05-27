@@ -181,10 +181,16 @@ export default function Vault() {
               <div className="flex items-center justify-center w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex-shrink-0">
                 <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
               </div>
-              <h1 className="text-sm sm:text-lg font-semibold truncate">DNVAULT</h1>
+              <h1 
+                className="text-sm sm:text-lg font-semibold truncate cursor-pointer hover:text-blue-400 transition-colors duration-200" 
+                onClick={() => window.location.reload()}
+                title="Click to refresh"
+              >
+                DNVAULT
+              </h1>
               <div className="hidden lg:flex items-center gap-2 text-sm text-slate-400">
                 <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                <span>Vault unlocked successfully</span>
+                <span>All data encrypted with AES-256-GCM</span>
               </div>
             </div>
             

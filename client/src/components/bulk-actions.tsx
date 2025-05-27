@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Trash2, Download, Upload, Edit, Share2 } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,6 +34,7 @@ export function BulkActions({
   onBulkExport 
 }: BulkActionsProps) {
   const [isSelectMode, setIsSelectMode] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
@@ -63,28 +65,31 @@ export function BulkActions({
   return (
     <div className="space-y-4">
       {/* Bulk Actions Header */}
-      <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-        <div className="flex items-center gap-3">
+      <div className={`p-3 bg-muted rounded-lg ${isMobile ? 'space-y-3' : 'flex items-center justify-between'}`}>
+        <div className={`${isMobile ? 'space-y-3' : 'flex items-center gap-3'}`}>
           <Button
             variant={isSelectMode ? "default" : "outline"}
-            size="sm"
+            size={isMobile ? "default" : "sm"}
             onClick={toggleSelectMode}
+            className={isMobile ? "w-full" : ""}
           >
             {isSelectMode ? "Cancel Selection" : "Select Multiple"}
           </Button>
           
           {isSelectMode && (
-            <div className="flex items-center gap-2">
-              <Checkbox
-                checked={allSelected}
-                onCheckedChange={handleSelectAll}
-                id="select-all"
-              />
-              <label htmlFor="select-all" className="text-sm cursor-pointer">
-                Select All
-              </label>
+            <div className={`${isMobile ? 'flex flex-col gap-2' : 'flex items-center gap-2'}`}>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  checked={allSelected}
+                  onCheckedChange={handleSelectAll}
+                  id="select-all"
+                />
+                <label htmlFor="select-all" className="text-sm cursor-pointer">
+                  Select All
+                </label>
+              </div>
               {selectedCount > 0 && (
-                <Badge variant="secondary">
+                <Badge variant="secondary" className={isMobile ? "self-start" : ""}>
                   {selectedCount} selected
                 </Badge>
               )}
@@ -93,11 +98,12 @@ export function BulkActions({
         </div>
 
         {selectedCount > 0 && (
-          <div className="flex items-center gap-2">
+          <div className={`${isMobile ? 'flex flex-col gap-2' : 'flex items-center gap-2'}`}>
             <Button
               variant="outline"
-              size="sm"
+              size={isMobile ? "default" : "sm"}
               onClick={() => onBulkExport(selectedIds)}
+              className={isMobile ? "w-full" : ""}
             >
               <Download className="w-4 h-4 mr-1" />
               Export
@@ -105,12 +111,16 @@ export function BulkActions({
             
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive" size="sm">
+                <Button 
+                  variant="destructive" 
+                  size={isMobile ? "default" : "sm"}
+                  className={isMobile ? "w-full" : ""}
+                >
                   <Trash2 className="w-4 h-4 mr-1" />
                   Delete ({selectedCount})
                 </Button>
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent className={isMobile ? "mx-4 max-w-[calc(100vw-2rem)]" : ""}>
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Selected Passwords</AlertDialogTitle>
                   <AlertDialogDescription>
@@ -118,15 +128,15 @@ export function BulkActions({
                     This action cannot be undone.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogFooter className={isMobile ? "flex-col gap-2" : ""}>
+                  <AlertDialogCancel className={isMobile ? "w-full" : ""}>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => {
                       onBulkDelete(selectedIds);
                       onSelectionChange([]);
                       setIsSelectMode(false);
                     }}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    className={`bg-destructive text-destructive-foreground hover:bg-destructive/90 ${isMobile ? "w-full" : ""}`}
                   >
                     Delete
                   </AlertDialogAction>
@@ -143,7 +153,7 @@ export function BulkActions({
           {passwords.map(password => (
             <div
               key={password.id}
-              className="flex items-center gap-3 p-2 rounded border hover:bg-muted/50"
+              className="flex items-center gap-3 p-3 rounded border hover:bg-muted/50"
             >
               <Checkbox
                 checked={selectedIds.includes(password.id)}
@@ -154,8 +164,10 @@ export function BulkActions({
                 htmlFor={`select-${password.id}`}
                 className="flex-1 cursor-pointer text-sm"
               >
-                <span className="font-medium">{password.serviceName}</span>
-                <span className="text-muted-foreground ml-2">({password.username})</span>
+                <div className={isMobile ? "flex flex-col gap-1" : "flex items-center gap-2"}>
+                  <span className="font-medium">{password.serviceName}</span>
+                  <span className="text-muted-foreground">({password.username})</span>
+                </div>
               </label>
             </div>
           ))}

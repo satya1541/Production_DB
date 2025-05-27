@@ -1,38 +1,31 @@
-
 // Completely disable all console output before any imports or code execution
 (() => {
   const noop = () => {};
-  
-  // Override console methods on both global scope and window
-  const consoleOverride = {
-    log: noop,
-    warn: noop,
-    info: noop,
-    error: noop,
-    debug: noop,
-    trace: noop,
-    group: noop,
-    groupEnd: noop,
-    groupCollapsed: noop,
-    time: noop,
-    timeEnd: noop,
-    count: noop,
-    countReset: noop,
-    clear: noop,
-    table: noop,
-    dir: noop,
-    dirxml: noop,
-    assert: noop,
-  };
-  
-  // Apply to global console
-  Object.assign(globalThis.console, consoleOverride);
-  
-  // Apply to window console if available
-  if (typeof window !== 'undefined') {
-    Object.assign(window.console, consoleOverride);
-    
-    // Suppress React DevTools
+
+  // Override all common console methods with no-ops
+  const consoleMethods = [
+    "log", "warn", "info", "error", "debug", "trace",
+    "group", "groupEnd", "groupCollapsed", "time", "timeEnd",
+    "count", "countReset", "clear", "table", "dir", "dirxml", "assert",
+  ];
+
+  consoleMethods.forEach(method => {
+    if (console[method]) {
+      console[method] = noop;
+    }
+  });
+
+  // Also override window.console if present
+  if (typeof window !== "undefined" && window.console) {
+    consoleMethods.forEach(method => {
+      if (window.console[method]) {
+        window.console[method] = noop;
+      }
+    });
+  }
+
+  // Disable React DevTools global hook
+  if (typeof window !== "undefined") {
     window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
       onCommitFiberRoot: noop,
       onCommitFiberUnmount: noop,
@@ -44,27 +37,6 @@
       onComponentDidMount: noop,
       onComponentWillUnmount: noop,
     };
-    
-    // Override addEventListener to block console-related events
-    const originalAddEventListener = window.addEventListener;
-    window.addEventListener = function(type, listener, options) {
-      // Block beforeinstallprompt events that cause banner warnings
-      if (type === 'beforeinstallprompt') {
-        return;
-      }
-      return originalAddEventListener.call(this, type, listener, options);
-    };
-  }
-  
-  // Intercept and suppress Vite HMR messages
-  if (import.meta.hot) {
-    // Override Vite's internal logging
-    const originalSend = import.meta.hot.send;
-    import.meta.hot.send = noop;
-    
-    // Suppress HMR connection messages
-    import.meta.hot.on = noop;
-    import.meta.hot.off = noop;
   }
 })();
 
@@ -83,8 +55,8 @@ createRoot(document.getElementById("root")!).render(
       <App />
       <Toaster />
     </QueryClientProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 
-// Register service worker for PWA functionality
 registerServiceWorker();
+
