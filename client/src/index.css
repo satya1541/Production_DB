@@ -1,0 +1,276 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Light theme colors */
+  --background: 0 0% 98%; /* Very light gray */
+  --foreground: 222 84% 4.9%; /* Dark slate */
+  --muted: 210 40% 93%; /* Light gray */
+  --muted-foreground: 215.4 16.3% 40%; /* Medium gray */
+  --popover: 0 0% 100%; /* Pure white */
+  --popover-foreground: 222 84% 4.9%; /* Dark slate */
+  --card: 0 0% 100%; /* Pure white */
+  --card-foreground: 222 84% 4.9%; /* Dark slate */
+  --border: 214.3 31.8% 87%; /* Light border */
+  --input: 214.3 31.8% 94%; /* Light input background */
+  --primary: 221 83% 53%; /* Blue primary */
+  --primary-foreground: 0 0% 100%; /* White text on primary */
+  --secondary: 210 40% 92%; /* Light secondary */
+  --secondary-foreground: 222 84% 15%; /* Dark secondary text */
+  --accent: 210 40% 90%; /* Light accent */
+  --accent-foreground: 222 84% 15%; /* Dark accent text */
+  --destructive: 0 84% 60%; /* Red destructive */
+  --destructive-foreground: 0 0% 100%; /* White text on destructive */
+  --ring: 221 83% 53%; /* Blue ring */
+  --radius: 0.5rem;
+
+  /* Chart colors for light theme */
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  /* Sidebar colors for light theme */
+  --sidebar-background: 0 0% 97%;
+  --sidebar-foreground: 222 84% 4.9%;
+  --sidebar-primary: 221 83% 53%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 210 40% 90%;
+  --sidebar-accent-foreground: 222 84% 15%;
+  --sidebar-border: 214.3 31.8% 85%;
+  --sidebar-ring: 221 83% 53%;
+}
+
+.dark {
+  --background: 222 84% 5%;
+  --foreground: 210 40% 98%;
+  --muted: 215 28% 17%;
+  --muted-foreground: 217 11% 65%;
+  --popover: 222 84% 5%;
+  --popover-foreground: 210 40% 98%;
+  --card: 215 28% 17%;
+  --card-foreground: 210 40% 98%;
+  --border: 217 33% 26%;
+  --input: 217 33% 26%;
+  --primary: 221 83% 53%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 215 28% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 215 28% 17%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 212 95% 68%;
+  --radius: 0.5rem;
+
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  --sidebar-background: 222 84% 5%;
+  --sidebar-foreground: 210 40% 98%;
+  --sidebar-primary: 221 83% 53%;
+  --sidebar-primary-foreground: 210 40% 98%;
+  --sidebar-accent: 215 28% 17%;
+  --sidebar-accent-foreground: 210 40% 98%;
+  --sidebar-border: 217 33% 26%;
+  --sidebar-ring: 221 83% 53%;
+}
+
+:root {
+  --bg-color-light: #f8f9fa;
+  --text-color-light: #343a40;
+}
+
+.light-mode .bg-background {
+  background-color: var(--bg-color-light);
+}
+
+.light-mode .text-foreground {
+  color: var(--text-color-light);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-slate-500;
+  }
+
+  /* Focus ring improvements */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Button hover animations */
+  .btn-hover {
+    @apply transition-all duration-200 hover:scale-105;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-lg hover:shadow-black/20;
+  }
+
+  /* PIN dot animations */
+  .pin-dot {
+    @apply transition-all duration-200;
+  }
+
+  .pin-dot.filled {
+    @apply bg-primary border-primary scale-110;
+  }
+
+  /* Password strength meter */
+  .strength-meter {
+    @apply transition-all duration-300;
+  }
+
+  /* Modal backdrop blur */
+  .modal-backdrop {
+    backdrop-filter: blur(4px);
+  }
+
+  /* Toast animations */
+  .toast-enter {
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  /* Loading spinner */
+  .spinner {
+    border: 2px solid hsl(var(--muted));
+    border-top: 2px solid hsl(var(--primary));
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Text selection */
+  ::selection {
+    @apply bg-primary/20 text-primary-foreground;
+  }
+
+  /* Transitions for smoother UI interactions */
+  button, .bg-input, .bg-card, .border-border {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  button:hover, .bg-input:hover, .bg-card:hover {
+    filter: brightness(0.95);
+  }
+
+  /* Ensure proper text rendering */
+  h1, h2, h3, h4, h5, h6 {
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Improve font rendering on webkit */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Mobile-specific improvements */
+  @media (max-width: 768px) {
+    /* Prevent zoom on input focus */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+      font-size: 16px;
+    }
+
+    /* Improve touch targets */
+    button {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Better tap highlighting */
+    button, a, [role="button"] {
+      -webkit-tap-highlight-color: rgba(59, 130, 246, 0.3);
+    }
+
+    /* Prevent horizontal scroll */
+    body {
+      overflow-x: hidden;
+    }
+  }
+}
+
+/* Utilities for the password manager */
+@layer utilities {
+  .text-monospace {
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  }
+
+  .gradient-border {
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--accent))) padding-box,
+                linear-gradient(45deg, hsl(var(--primary)), hsl(var(--accent))) border-box;
+    border: 2px solid transparent;
+  }
+
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .security-indicator {
+    @apply inline-flex items-center gap-1 text-xs px-2 py-1 rounded-full;
+  }
+
+  .security-indicator.secure {
+    @apply bg-green-500/20 text-green-400 border border-green-500/30;
+  }
+
+  .security-indicator.warning {
+    @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
+  }
+
+  .security-indicator.danger {
+    @apply bg-red-500/20 text-red-400 border border-red-500/30;
+  }
+}
