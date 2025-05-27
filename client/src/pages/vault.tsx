@@ -210,6 +210,9 @@ export default function Vault() {
                 />
               </div>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Add Password Button */}
               <Button
                 onClick={handleAddPassword}

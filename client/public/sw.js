@@ -1,4 +1,5 @@
 
+
 const CACHE_NAME = 'vault-cache-v1';
 const urlsToCache = [
   '/',
@@ -11,6 +12,9 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => cache.addAll(urlsToCache))
+      .catch(() => {
+        // Silently handle cache errors
+      })
   );
 });
 
@@ -23,6 +27,10 @@ self.addEventListener('fetch', (event) => {
           return response;
         }
         return fetch(event.request);
+      })
+      .catch(() => {
+        // Silently handle fetch errors instead of throwing
+        return new Response('', { status: 200 });
       })
   );
 });
@@ -37,6 +45,9 @@ self.addEventListener('activate', (event) => {
           }
         })
       );
+    }).catch(() => {
+      // Silently handle activation errors
     })
   );
 });
+

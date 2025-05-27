@@ -11,10 +11,9 @@ export interface BeforeInstallPromptEvent extends Event {
 export const registerServiceWorker = async (): Promise<void> => {
   if ('serviceWorker' in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered successfully:', registration);
+      await navigator.serviceWorker.register('/sw.js');
     } catch (error) {
-      console.error('Service Worker registration failed:', error);
+      // Service Worker registration failed - fail silently in production
     }
   }
 };
